@@ -5,7 +5,7 @@ pipeline {
             steps { checkout scm }
         }
         stage('Build') {
-            steps { echo 'Build backend à compléter' }
+            steps { echo 'Build frontend à compléter' }
         }
     }
 }
