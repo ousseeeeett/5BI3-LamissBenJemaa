@@ -5,7 +5,17 @@ pipeline {
             steps { checkout scm }
         }
         stage('Build') {
-            steps { echo 'Build frontend à compléter' }
+            steps {
+                dir('frontend') {
+                    sh 'chmod +x mvnw'
+                    sh './mvnw clean package -DskipTests'
+                }
+            }
+        }
+        stage('Archive') {
+            steps {
+                archiveArtifacts artifacts: 'frontend/target/*.jar', fingerprint: true
+            }
         }
     }
 }
