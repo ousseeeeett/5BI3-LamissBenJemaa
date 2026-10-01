@@ -1,9 +1,9 @@
 pipeline {
     agent any
+    environment {
+        IMAGE_NAME = 'backend-app'
+    }
     stages {
-        stage('Checkout') {
-            steps { checkout scm }
-        }
         stage('Build') {
             steps {
                 dir('backend') {
@@ -15,6 +15,13 @@ pipeline {
         stage('Archive') {
             steps {
                 archiveArtifacts artifacts: 'backend/target/*.jar', fingerprint: true
+            }
+        }
+        stage('Docker Build') {
+            steps {
+                dir('backend') {
+                    sh 'docker build -t ${IMAGE_NAME}:${BUILD_NUMBER} -t ${IMAGE_NAME}:latest .'
+                }
             }
         }
     }
